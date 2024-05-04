@@ -32,7 +32,7 @@
   "module": "dist/esm/sdk.js",
   "types": "types/index.d.ts",
   "scripts": {
-    "build": "npm run build:types && npm run build:libs",
+    "build": "npm run build:libs && npm run build:types",
     "build:libs": "rollup -c",
     "build:types": "tsc --declaration --emitDeclarationOnly --outDir types",
     "ci": "bun run lint:circular && bun run type-check",
