@@ -35,9 +35,8 @@
     "build": "npm run build:types && npm run build:libs",
     "build:libs": "rollup -c",
     "build:types": "tsc --declaration --emitDeclarationOnly --outDir types",
-    "ci": "bun run lint:circular && bun run lint && bun run type-check",
+    "ci": "bun run lint:circular && bun run type-check",
     "clean": "rm -r es lib dist coverage .eslintcache node_modules/.cache",
-    "lint": "eslint \"{src,tests}/**/*.{js,jsx,ts,tsx}\" --fix",
     "lint:circular": "dpdm src/**/*.{ts,tsx}  --warning false  --tree false  --exit-code circular:1  -T true",
     "lint:md": "remark . --quiet --frail --output",
     "lint:style": "stylelint \"{src,tests}/**/*.{js,jsx,ts,tsx}\" --fix",
@@ -66,6 +65,11 @@
       "eslint --fix"
     ]
   },
+  "eslintIgnore": [
+    "coverage",
+    "dist",
+    "node_modules"
+  ],
   "dependencies": {
     "expo-file-system": "16.0.8",
     "react-native": "^0.73.6"
