@@ -1,10 +1,25 @@
 {
-  "name": "react-native-appwrite",
+  "name": "@arietta-studio/appwrite-sdk",
+  "version": "0.0.1",
+  "description": "Appwrite SDK for TypeScript",
+  "keywords": [
+    "arietta-studio",
+    "components",
+    "sdk",
+    "appwrite",
+    "api",
+    "client",
+    "typescript",
+    "react",
+    "react-native",
+    "expo"
+  ],
   "homepage": "https://appwrite.io/support",
-  "description": "Appwrite is an open-source self-hosted backend server that abstract and simplify complex and repetitive development tasks behind a very simple REST API",
-  "version": "0.3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arietta-studio/appwrite-sdk-ts"
+  },
   "license": "BSD-3-Clause",
-  "main": "dist/cjs/sdk.js",
   "exports": {
     ".": {
       "import": "./dist/esm/sdk.js",
@@ -13,31 +28,80 @@
     },
     "./package.json": "./package.json"
   },
+  "main": "dist/cjs/sdk.js",
   "module": "dist/esm/sdk.js",
   "types": "types/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/appwrite/sdk-for-react-native"
-  },
   "scripts": {
     "build": "npm run build:types && npm run build:libs",
+    "build:libs": "rollup -c",
     "build:types": "tsc --declaration --emitDeclarationOnly --outDir types",
-    "build:libs": "rollup -c"
+    "ci": "bun run lint:circular && bun run lint && bun run type-check",
+    "clean": "rm -r es lib dist coverage .eslintcache node_modules/.cache",
+    "lint": "eslint \"{src,tests}/**/*.{js,jsx,ts,tsx}\" --fix",
+    "lint:circular": "dpdm src/**/*.{ts,tsx}  --warning false  --tree false  --exit-code circular:1  -T true",
+    "lint:md": "remark . --quiet --frail --output",
+    "lint:style": "stylelint \"{src,tests}/**/*.{js,jsx,ts,tsx}\" --fix",
+    "prepare": "husky install",
+    "prettier": "prettier -c --write --no-error-on-unmatched-pattern \"**/**\"",
+    "pull": "git pull",
+    "release": "semantic-release",
+    "type-check": "tsc -p tsconfig-check.json"
   },
-  "devDependencies": {
-    "@rollup/plugin-typescript": "8.3.2",
-    "playwright": "1.15.0",
-    "rollup": "2.75.4",
-    "serve-handler": "6.1.0",
-    "tslib": "2.4.0",
-    "typescript": "4.7.2"
+  "lint-staged": {
+    "*.md": [
+      "remark --quiet --output --",
+      "prettier --write --no-error-on-unmatched-pattern"
+    ],
+    "*.json": [
+      "prettier --write --no-error-on-unmatched-pattern"
+    ],
+    "*.{js,jsx}": [
+      "prettier --write",
+      "stylelint --fix",
+      "eslint --fix"
+    ],
+    "*.{ts,tsx}": [
+      "prettier --parser=typescript --write",
+      "stylelint --fix",
+      "eslint --fix"
+    ]
   },
   "dependencies": {
     "expo-file-system": "16.0.8",
     "react-native": "^0.73.6"
   },
+  "devDependencies": {
+    "@arietta-studio/lint": "latest",
+    "@commitlint/cli": "^19.0.0",
+    "@rollup/plugin-typescript": "8.3.2",
+    "@testing-library/react": "^14",
+    "commitlint": "^19.0.0",
+    "cross-env": "^7",
+    "husky": "^8",
+    "jsdom": "^24.0.0",
+    "lint-staged": "^15",
+    "playwright": "1.15.0",
+    "prettier": "^3",
+    "react": "^18",
+    "react-dom": "^18",
+    "remark": "^14",
+    "remark-cli": "^11",
+    "rollup": "2.75.4",
+    "semantic-release": "^21",
+    "serve-handler": "6.1.0",
+    "stylelint": "^15",
+    "stylelint-use-logical-spec": "^5.0.1",
+    "tslib": "2.4.0",
+    "typescript": "4.7.2"
+  },
   "peerDependencies": {
     "expo": "*",
+    "react": ">=18",
+    "react-dom": ">=18",
     "react-native": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }
