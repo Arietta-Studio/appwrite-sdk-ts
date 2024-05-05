@@ -25,7 +25,20 @@ export type AppWriteContextType = {
   isAuthenticationLoading: boolean;
 };
 
-const AppWriteContext = createContext<AppWriteContextType | undefined>(undefined);
+const AppWriteContext = createContext<AppWriteContextType>({
+  signUp: async () => {
+    throw new Error('AppWriteProvider not found');
+  },
+  signIn: async () => {
+    throw new Error('AppWriteProvider not found');
+  },
+  signOut: async () => {
+    throw new Error('AppWriteProvider not found');
+  },
+  isAuthenticated: false,
+  user: undefined,
+  isAuthenticationLoading: true,
+});
 
 export const useAppWrite = () => useContext(AppWriteContext);
 

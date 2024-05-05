@@ -34,7 +34,7 @@
   "scripts": {
     "build": "npm run build:libs && npm run build:types",
     "build:libs": "rollup -c",
-    "build:types": "tsc --declaration --emitDeclarationOnly --outDir types",
+    "build:types": "rm -r types && tsc --declaration --emitDeclarationOnly --outDir types",
     "ci": "bun run lint:circular && bun run type-check",
     "clean": "rm -r es lib dist coverage .eslintcache node_modules/.cache",
     "lint:circular": "dpdm src/**/*.{ts,tsx}  --warning false  --tree false  --exit-code circular:1  -T true",

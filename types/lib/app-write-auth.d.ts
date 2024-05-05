@@ -1,8 +1,8 @@
 import { type AppwriteConfigType } from './AppWriteProvider';
 export declare const appWriteAuth: (config: AppwriteConfigType) => {
-    signUp: (email: string, password: string, username: string) => Promise<import("../models").Models.Document>;
-    signIn: (email: string, password: string) => Promise<import("../models").Models.Session>;
-    getAccount: () => Promise<import("../models").Models.User<import("../models").Models.Preferences>>;
-    getCurrentUser: () => Promise<import("../models").Models.Document | null>;
+    signUp: (email: string, password: string, username: string) => Promise<import("client").Models.Document>;
+    signIn: (email: string, password: string) => Promise<import("client").Models.Session>;
+    getAccount: () => Promise<import("client").Models.User<import("client").Models.Preferences>>;
+    getCurrentUser: () => Promise<import("client").Models.Document | null>;
     signOut: () => Promise<{}>;
 };

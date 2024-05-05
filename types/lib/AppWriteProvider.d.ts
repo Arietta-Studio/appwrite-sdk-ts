@@ -20,5 +20,5 @@ export declare type AppWriteContextType = {
     user: Models.Document | undefined;
     isAuthenticationLoading: boolean;
 };
-export declare const useAppWrite: () => AppWriteContextType | undefined;
+export declare const useAppWrite: () => AppWriteContextType;
 export declare const AppWriteProvider: FC<AppWriteProviderProps>;
