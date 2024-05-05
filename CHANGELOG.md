@@ -2,6 +2,39 @@
 
 # Changelog
 
+## [Version 1.3.0](https://github.com/arietta-studio/appwrite-sdk-ts/compare/v1.2.0...v1.3.0)
+
+<sup>Released on **2024-05-05**</sup>
+
+#### ♻ Code Refactoring
+
+- **misc**: Streamline imports in app-write-auth module.
+
+#### ✨ Features
+
+- **misc**: Add hooks and provider for Appwrite integration.
+
+<br/>
+
+<details>
+<summary><kbd>Improvements and Fixes</kbd></summary>
+
+#### Code refactoring
+
+- **misc**: Streamline imports in app-write-auth module ([1b6027c](https://github.com/arietta-studio/appwrite-sdk-ts/commit/1b6027c))
+
+#### What's improved
+
+- **misc**: Add hooks and provider for Appwrite integration ([e511fcc](https://github.com/arietta-studio/appwrite-sdk-ts/commit/e511fcc))
+
+</details>
+
+<div align="right">
+
+[![](https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square)](#readme-top)
+
+</div>
+
 ## [Version 1.2.0](https://github.com/arietta-studio/appwrite-sdk-ts/compare/v1.1.0...v1.2.0)
 
 <sup>Released on **2024-05-04**</sup>
