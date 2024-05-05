@@ -2,6 +2,31 @@
 
 # Changelog
 
+## [Version 1.5.0](https://github.com/arietta-studio/appwrite-sdk-ts/compare/v1.4.0...v1.5.0)
+
+<sup>Released on **2024-05-05**</sup>
+
+#### ✨ Features
+
+- **misc**: Extend AppWriteProvider with user refresh and update functionality.
+
+<br/>
+
+<details>
+<summary><kbd>Improvements and Fixes</kbd></summary>
+
+#### What's improved
+
+- **misc**: Extend AppWriteProvider with user refresh and update functionality ([d2dbf62](https://github.com/arietta-studio/appwrite-sdk-ts/commit/d2dbf62))
+
+</details>
+
+<div align="right">
+
+[![](https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square)](#readme-top)
+
+</div>
+
 ## [Version 1.4.0](https://github.com/arietta-studio/appwrite-sdk-ts/compare/v1.3.0...v1.4.0)
 
 <sup>Released on **2024-05-05**</sup>
