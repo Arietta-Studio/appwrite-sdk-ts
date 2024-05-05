@@ -1,5 +1,5 @@
 import { Client } from 'client';
-import { type AppwriteConfigType } from './AppWriteProvider';
+import { type AppWriteConfigType } from './AppWriteProvider';
 import { Account } from 'services/account';
 import { Avatars } from 'services/avatars';
 import { Databases } from 'services/databases';
@@ -13,7 +13,7 @@ function handleApiError(error: unknown): Error {
   return new Error('An unexpected error occurred');
 }
 
-export const appWriteAuth = (config: AppwriteConfigType) => {
+export const appWriteAuth = (config: AppWriteConfigType) => {
   const client = new Client();
 
   client.setEndpoint(config.endpoint).setProject(config.projectId).setPlatform(config.platform);
@@ -96,7 +96,7 @@ export const appWriteAuth = (config: AppwriteConfigType) => {
       return currentUser.documents[0];
     } catch (error) {
       console.log(error);
-      return null;
+      return undefined;
     }
   };
 

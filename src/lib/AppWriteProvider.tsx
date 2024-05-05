@@ -3,7 +3,7 @@ import { type Models } from '../index';
 import { createContext, type FC, useContext, useEffect, useMemo, useState } from 'react';
 import { appWriteAuth } from './app-write-auth';
 
-export type AppwriteConfigType = {
+export type AppWriteConfigType = {
   readonly endpoint: string;
   readonly platform: string;
   readonly projectId: string;
@@ -13,16 +13,19 @@ export type AppwriteConfigType = {
 
 export type AppWriteProviderProps = {
   readonly children: React.ReactNode;
-  readonly config: AppwriteConfigType;
+  readonly config: AppWriteConfigType;
 };
 
 export type AppWriteContextType = {
   signUp: (email: string, password: string, username: string) => Promise<Models.Document>;
   signIn: (email: string, password: string) => Promise<Models.Session>;
-  signOut: () => Promise<{}>;
+  signOut: () => Promise<void>;
+  userRefresh: () => Promise<void>;
+  updateUser: (newUser: Models.Document) => Promise<void>;
   isAuthenticated: boolean;
   user: Models.Document | undefined;
   isAuthenticationLoading: boolean;
+  isUserDataRefreshing: boolean;
 };
 
 const AppWriteContext = createContext<AppWriteContextType>({
@@ -35,9 +38,16 @@ const AppWriteContext = createContext<AppWriteContextType>({
   signOut: async () => {
     throw new Error('AppWriteProvider not found');
   },
+  userRefresh: async () => {
+    throw new Error('AppWriteProvider not found');
+  },
+  updateUser: async () => {
+    throw new Error('AppWriteProvider not found');
+  },
   isAuthenticated: false,
   user: undefined,
   isAuthenticationLoading: true,
+  isUserDataRefreshing: false,
 });
 
 export const useAppWrite = () => useContext(AppWriteContext);
@@ -45,22 +55,25 @@ export const useAppWrite = () => useContext(AppWriteContext);
 export const AppWriteProvider: FC<AppWriteProviderProps> = ({ children, config }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<Models.Document | undefined>(undefined);
-  const [isAuthenticationLoading, setIsAuthenticationLoading] = useState<boolean>(true);
+  const [isAuthenticationLoading, setIsAuthenticationLoading] = useState<boolean>(true); // for initial navigation guards
+  const [isUserDataRefreshing, setIsUserDataRefresh] = useState<boolean>(false);
 
   const { signUp, signIn, signOut, getCurrentUser } = appWriteAuth(config);
 
   const fetchUserData = async () => {
-    setIsAuthenticationLoading(true);
+    setIsUserDataRefresh(true);
     const userData = await getCurrentUser();
-    if (userData) {
-      setIsAuthenticated(true);
-      setUser(userData);
-    } else {
-      setIsAuthenticated(false);
-      setUser(undefined);
-    }
+    setIsAuthenticated(userData !== undefined);
+    setUser(userData);
     setIsAuthenticationLoading(false);
+    setIsUserDataRefresh(false);
   };
+
+  const handleSignUp = async (email: string, password: string, username: string) => {
+    const newUser = await signUp(email, password, username);
+    await fetchUserData(); // Refresh user data post-sign-up
+    return newUser;
+  }
 
   const handleSignIn = async (email: string, password: string) => {
     const session = await signIn(email, password);
@@ -68,16 +81,34 @@ export const AppWriteProvider: FC<AppWriteProviderProps> = ({ children, config }
     return session;
   };
 
+  const handleSignOut = async () => {
+    await signOut();
+    setIsAuthenticated(false);
+    setUser(undefined);
+  }
+
+  const handleUserRefresh = async () => {
+    await fetchUserData();
+  }
+
+  // Placeholder for future functionality
+  const handleUpdateUser = async (newUser: Models.Document) => {
+    setUser(newUser);
+  }
+
   const contextValue = useMemo(
     () => ({
-      signUp,
+      signUp: handleSignUp,
       signIn: handleSignIn,
-      signOut,
+      signOut: handleSignOut,
+      userRefresh: handleUserRefresh,
+      updateUser: handleUpdateUser,
       isAuthenticated,
       user,
       isAuthenticationLoading,
+      isUserDataRefreshing,
     }),
-    [isAuthenticated, user, isAuthenticationLoading]
+    [isAuthenticated, user, isAuthenticationLoading, isUserDataRefreshing]
   );
 
   useEffect(() => {
