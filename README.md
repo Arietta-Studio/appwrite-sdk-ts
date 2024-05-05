@@ -1,42 +1,58 @@
-# Appwrite React Native SDK
+<div align="center"><a name="readme-top"></a>
 
-![License](https://img.shields.io/github/license/appwrite/sdk-for-react-native.svg?style=flat-square)
-![Version](https://img.shields.io/badge/api%20version-1.5.4-blue.svg?style=flat-square)
-[![Build Status](https://img.shields.io/travis/com/appwrite/sdk-generator?style=flat-square)](https://travis-ci.com/appwrite/sdk-generator)
-[![Twitter Account](https://img.shields.io/twitter/follow/appwrite?color=00acee&label=twitter&style=flat-square)](https://twitter.com/appwrite)
-[![Discord](https://img.shields.io/discord/564160730845151244?label=discord&style=flat-square)](https://appwrite.io/discord)
+<img height="160" src="https://unpkg.com/@arietta-studio/assets-logo@latest/assets/logo-3d.webp">
 
-**This SDK is compatible with Appwrite server version 1.5.x. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-react-native/releases).**
+<h1>React Native AppWrite SDK</h1>
 
-Appwrite is an open-source backend as a service server that abstract and simplify complex and repetitive development tasks behind a very simple to use REST API. Appwrite aims to help you develop your apps faster and in a more secure way. Use the React Native SDK to integrate your app with the Appwrite server to easily start interacting with all of Appwrite backend APIs and tools. For full API documentation and tutorials go to <https://appwrite.io/docs>
+AppWrite SDK for React-Native
 
-![Appwrite](https://github.com/appwrite/appwrite/raw/main/public/images/github.png)
+[![][npm-release-shield]][npm-release-link]
+[![][github-releasedate-shield]][github-releasedate-link]
+[![][github-action-test-shield]][github-action-test-link]
+[![][github-action-release-shield]][github-action-release-link]<br/>
+[![][github-contributors-shield]][github-contributors-link]
+[![][github-forks-shield]][github-forks-link]
+[![][github-stars-shield]][github-stars-link]
+[![][github-issues-shield]][github-issues-link]
+[![][github-license-shield]][github-license-link]
 
-## Installation
+[Changelog](./CHANGELOG.md) · [Report Bug][github-issues-link] · [Request Feature][github-issues-link]
 
-To install
+![](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+</div>
+
+## 📦 Installation
+
+To install `@arietta-studio/appwrite-sdk react-native-url-polyfill`, run the following command:
+
+[![][bun-shield]][bun-link]
 
 ```bash
-npx expo install @arietta-studio/appwrite-sdk react-native-url-polyfill
+$ bun add @arietta-studio/appwrite-sdk react-native-url-polyfill
 ```
 
-## Getting Started
+<div align="right">
+
+[![][back-to-top]](#readme-top)
+
+</div>
 
 ### Add your Platform
 
 If this is your first time using Appwrite, create an account and create your first project.
 
-Then, under **Add a platform**, add a **Android app** or a **Apple app**. You can skip optional steps.
+Then, under Add a platform, add a Android app or a Apple app. You can skip optional steps.
 
 #### iOS steps
 
-Add your app **name** and **Bundle ID**. You can find your **Bundle Identifier** in the **General** tab for your app's primary target in XCode. For Expo projects you can set or find it on **app.json** file at your project's root directory.
+Add your app name and Bundle ID. You can find your Bundle Identifier in the General tab for your app's primary target in XCode. For Expo projects you can set or find it on app.json file at your project's root directory.
 
 #### Android steps
 
-Add your app's **name** and **package name**, Your package name is generally the **applicationId** in your app-level **build.gradle** file. For Expo projects you can set or find it on **app.json** file at your project's root directory.
+Add your app's name and package name, Your package name is generally the applicationId in your app-level build.gradle file. For Expo projects you can set or find it on app.json file at your project's root directory.
 
-## Setup
+### Setup
 
 On `index.js` add import for `react-native-url-polyfill`
 
@@ -49,77 +65,190 @@ import 'react-native-url-polyfill/auto'
 
 ### Init your SDK
 
+Add these values to `.env` file:
+
+```js
+APPWRITE_ENDPOINT =
+  APPWRITE_PLATFORM =
+  APPWRITE_PROJECT_ID =
+  APPWRITE_STORAGE_ID =
+  APPWRITE_DATABASE_ID =
+  APPWRITE_USER_COLLECTION_ID =
+    'users';
+```
+
 Initialize your SDK with your Appwrite server API endpoint and project ID which can be found in your project settings page.
 
-```js
-import { Client } from 'react-native-appwrite';
+```tsx
+import { AppWriteProvider } from '@arietta-studio/appwrite-sdk';
+import * as SplashScreen from 'expo-splash-screen';
 
-// Init your React Native SDK
-const client = new Client();
+const App = () => {
+  const appWriteConfig = {
+    endpoint: process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1',
+    platform: process.env.APPWRITE_PLATFORM ?? 'com.arietta.studio',
+    projectId: process.env.APPWRITE_PROJECT_ID ?? 'appWrite-project',
+    storageId: process.env.APPWRITE_STORAGE_ID ?? 'appWrite-storage',
+    databaseId: process.env.APPWRITE_DATABASE_ID ?? 'appWrite-database',
+    userCollectionId: process.env.APPWRITE_USER_COLLECTION_ID ?? 'users',
+  };
 
-client
-  .setEndpoint('http://localhost/v1') // Your Appwrite Endpoint
-  .setProject('455x34dfkj') // Your project ID
-  .setPlatform('com.example.myappwriteapp'); // Your application ID or bundle ID.
+  useEffect(() => {
+    // Stop the Splash Screen from being hidden.
+    const showSplashScreen = async () => {
+      await SplashScreen.preventAutoHideAsync();
+    };
+    void showSplashScreen();
+  }, []);
+
+  return (
+    <AppWriteProvider config={appWriteConfig}>
+      <SafeAreaProvider>
+        <NavigationContainer
+          theme={{
+            dark: true,
+          }}
+        >
+          <MainRootStack />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </AppWriteProvider>
+  );
+};
+
+export default App;
 ```
 
-### Make Your First Request
+<div align="right">
 
-Once your SDK object is set, access any of the Appwrite services and choose any request to send. Full documentation for any service method you would like to use can be found in your SDK documentation or in the [API References](https://appwrite.io/docs) section.
+[![][back-to-top]](#readme-top)
 
-```js
-const account = new Account(client);
+</div>
 
-// Register User
-account.create(ID.unique(), 'me@example.com', 'password', 'Jane Doe').then(
-  function (response) {
-    console.log(response);
-  },
-  function (error) {
-    console.log(error);
-  },
-);
+### Use in application
+
+```tsx
+import { useAppWrite } from '@arietta-studio/appwrite-sdk';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as SplashScreen from 'expo-splash-screen';
+import { type FC, useEffect } from 'react';
+
+import Onboarding from '../pages/Onboarding';
+import Profile from '../pages/Profile';
+import HomeTabNavigator from './HomeTabNavigator';
+import { ScreenNames } from './ScreenNames';
+
+export type MainRootStackParams = {
+  // Onboarding
+  [ScreenNames.Onboarding]: undefined;
+
+  // Home
+  [ScreenNames.MainHome]: undefined;
+  [ScreenNames.Profile]: undefined;
+};
+export const MainStack = createNativeStackNavigator<MainRootStackParams>();
+
+export const MainRootStack: FC = () => {
+  const { isAuthenticated, isAuthenticationLoading } = useAppWrite();
+
+  useEffect(() => {
+    // Once our data is ready, hide the Splash Screen
+    const hideSplashScreen = async () => {
+      await SplashScreen.hideAsync();
+    };
+
+    if (!isAuthenticationLoading) {
+      void hideSplashScreen();
+    }
+  }, [isAuthenticationLoading]);
+
+  return (
+    <MainStack.Navigator initialRouteName={ScreenNames.MainHome}>
+      {isAuthenticated ? (
+        <MainStack.Group>
+          <MainStack.Screen
+            name={ScreenNames.MainHome}
+            component={HomeTabNavigator}
+            options={{ headerShown: false }}
+          />
+          <MainStack.Screen
+            name={ScreenNames.Profile}
+            component={Profile}
+            options={{ headerShown: false }}
+          />
+        </MainStack.Group>
+      ) : (
+        <MainStack.Group>
+          <MainStack.Screen
+            name={ScreenNames.Onboarding}
+            component={Onboarding}
+            options={{ headerShown: false }}
+          />
+        </MainStack.Group>
+      )}
+    </MainStack.Navigator>
+  );
+};
 ```
 
-### Full Example
+<div align="right">
 
-```js
-import { Account, Client } from 'react-native-appwrite';
+[![][back-to-top]](#readme-top)
 
-// Init your React Native SDK
-const client = new Client();
+</div>
 
-client
-  .setEndpoint('http://localhost/v1') // Your Appwrite Endpoint
-  .setProject('455x34dfkj')
-  .setPlatform('com.example.myappwriteapp'); // YOUR application ID
+#### Hook gives you these functions and variables
 
-const account = new Account(client);
-
-// Register User
-account.create(ID.unique(), 'me@example.com', 'password', 'Jane Doe').then(
-  function (response) {
-    console.log(response);
-  },
-  function (error) {
-    console.log(error);
-  },
-);
+```ts
+type AppWriteContextType = {
+  signUp: (email: string, password: string, username: string) => Promise<Models.Document>;
+  signIn: (email: string, password: string) => Promise<Models.Session>;
+  signOut: () => Promise<void>;
+  userRefresh: () => Promise<void>;
+  updateUser: (newUser: Models.Document) => Promise<void>;
+  isAuthenticated: boolean;
+  user: Models.Document | undefined;
+  isAuthenticationLoading: boolean;
+  isUserDataRefreshing: boolean;
+};
 ```
 
-### Learn more
+## 🤝 Contributing
 
-You can use the following resources to learn more and get help
+Contributions of all types are more than welcome, if you are interested in contributing code, feel free to check out our GitHub [Issues][github-issues-link] to get stuck in to show us what you’re made of.
 
-- 🚀 [Getting Started Tutorial](https://appwrite.io/docs/quick-starts/react-native)
-- 📜 [Appwrite Docs](https://appwrite.io/docs)
-- 💬 [Discord Community](https://appwrite.io/discord)
-- 🚂 [Appwrite React Native Playground](https://github.com/appwrite/playground-for-react-native)
+[![][pr-welcome-shield]][pr-welcome-link]
 
-## Contribution
+[![][github-contrib-shield]][github-contrib-link]
 
-This library is auto-generated by Appwrite custom [SDK Generator](https://github.com/appwrite/sdk-generator). To learn more about how you can help us improve this SDK, please check the [contribution guide](https://github.com/appwrite/sdk-generator/blob/master/CONTRIBUTING.md) before sending a pull-request.
+<div align="right">
 
-## License
+[![][back-to-top]](#readme-top)
 
-Please see the [BSD-3-Clause license](https://raw.githubusercontent.com/appwrite/appwrite/master/LICENSE) file for more information.
+</div>
+
+[back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-black?style=flat-square
+[bun-link]: https://bun.sh
+[bun-shield]: https://img.shields.io/badge/-speedup%20with%20bun-black?logo=bun&style=for-the-badge
+[github-action-release-link]: https://github.com/arietta-studio/appwrite-sdk-ts/actions/workflows/release.yml
+[github-action-release-shield]: https://img.shields.io/github/actions/workflow/status/arietta-studio/appwrite-sdk-ts/release.yml?label=release&labelColor=black&logo=githubactions&logoColor=white&style=flat-square
+[github-action-test-link]: https://github.com/arietta-studio/appwrite-sdk-ts/actions/workflows/test.yml
+[github-action-test-shield]: https://img.shields.io/github/actions/workflow/status/arietta-studio/appwrite-sdk-ts/test.yml?label=test&labelColor=black&logo=githubactions&logoColor=white&style=flat-square
+[github-contrib-link]: https://github.com/arietta-studio/arietta-readme-wizard/graphs/contributors
+[github-contrib-shield]: https://contrib.rocks/image?repo=arietta-studio%2Farietta-readme-wizard
+[github-contributors-link]: https://github.com/arietta-studio/appwrite-sdk-ts/graphs/contributors
+[github-contributors-shield]: https://img.shields.io/github/contributors/arietta-studio/appwrite-sdk-ts?color=c4f042&labelColor=black&style=flat-square
+[github-forks-link]: https://github.com/arietta-studio/appwrite-sdk-ts/network/members
+[github-forks-shield]: https://img.shields.io/github/forks/arietta-studio/appwrite-sdk-ts?color=8ae8ff&labelColor=black&style=flat-square
+[github-issues-link]: https://github.com/arietta-studio/appwrite-sdk-ts/issues
+[github-issues-shield]: https://img.shields.io/github/issues/arietta-studio/appwrite-sdk-ts?color=ff80eb&labelColor=black&style=flat-square
+[github-license-link]: https://github.com/arietta-studio/appwrite-sdk-ts/blob/master/LICENSE
+[github-license-shield]: https://img.shields.io/github/license/arietta-studio/appwrite-sdk-ts?color=white&labelColor=black&style=flat-square
+[github-releasedate-link]: https://github.com/arietta-studio/appwrite-sdk-ts/releases
+[github-releasedate-shield]: https://img.shields.io/github/release-date/arietta-studio/appwrite-sdk-ts?labelColor=black&style=flat-square
+[github-stars-link]: https://github.com/arietta-studio/appwrite-sdk-ts/network/stargazers
+[github-stars-shield]: https://img.shields.io/github/stars/arietta-studio/appwrite-sdk-ts?color=ffcb47&labelColor=black&style=flat-square
+[npm-release-link]: https://www.npmjs.com/package/@arietta-studio/appwrite-sdk
+[npm-release-shield]: https://img.shields.io/npm/v/@arietta-studio/appwrite-sdk?color=369eff&labelColor=black&logo=npm&logoColor=white&style=flat-square
+[pr-welcome-link]: https://github.com/arietta-studio/arietta-readme-wizard/pulls
+[pr-welcome-shield]: https://img.shields.io/badge/%F0%9F%A4%AF%20PR%20WELCOME-%E2%86%92-ffcb47?labelColor=black&style=for-the-badge
