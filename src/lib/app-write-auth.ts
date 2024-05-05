@@ -1,13 +1,10 @@
-import {
-  Account,
-  Avatars,
-  Client,
-  Databases,
-  ID,
-  Query,
-} from '../index';
-
+import { Client } from 'client';
 import { type AppwriteConfigType } from './AppWriteProvider';
+import { Account } from 'services/account';
+import { Avatars } from 'services/avatars';
+import { Databases } from 'services/databases';
+import { Query } from 'query';
+import { ID } from 'id';
 
 function handleApiError(error: unknown): Error {
   if (error instanceof Error) {
