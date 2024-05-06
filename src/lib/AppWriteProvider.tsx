@@ -21,7 +21,7 @@ export type AppWriteContextType = {
   signIn: (email: string, password: string) => Promise<Models.Session>;
   signOut: () => Promise<void>;
   userRefresh: () => Promise<void>;
-  updateUser: (newUser: Models.Document) => Promise<void>;
+  updateUser: (newUser: Models.Document) => Promise<void>; // Placeholder for future functionality
   isAuthenticated: boolean;
   user: Models.Document | undefined;
   isAuthenticationLoading: boolean;
