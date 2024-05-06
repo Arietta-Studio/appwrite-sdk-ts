@@ -1,6 +1,6 @@
 {
   "name": "@arietta-studio/appwrite-sdk",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Appwrite SDK for TypeScript",
   "keywords": [
     "arietta-studio",
